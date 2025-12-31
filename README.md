@@ -1,6 +1,4 @@
-# live link:
-
-# github link: https://github.com/SazzadKhan45/color-nest-clint
+# live link: https://artifynest-assignment-10.netlify.app/
 
 # Website Name : (ArtifyNest)
 

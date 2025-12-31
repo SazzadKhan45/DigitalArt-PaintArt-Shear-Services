@@ -1,0 +1,71 @@
+import { Suspense, use } from "react";
+import ArtWorks from "../../Components/ArtWorks/ArtWorks";
+import MyContainer from "../../Components/MyContainer";
+import { ThemeContext } from "../../Providers/ThemeContext";
+import TopArtists from "../../Components/TopArtists/TopArtists";
+import CommunityHighlights from "../../Components/CommunityHighlights/CommunityHighlights";
+import ReactSilder from "../../Components/HeroSlider/ReactSilder";
+
+const promiseArtworks = fetch(
+  "https://color-nest-server.vercel.app/homepage-art"
+).then((res) => res.json());
+
+const HomePage = () => {
+  const { isDark } = use(ThemeContext);
+
+  return (
+    <div
+      className={`pt-12 ${
+        isDark
+          ? ""
+          : "bg-gradient-to-br from-purple-50 via-pink-50 to-yellow-50 text-gray-900"
+      }`}
+    >
+      <title>Home</title>
+      <MyContainer>
+        <header>
+          <ReactSilder />
+        </header>
+        <main>
+          <div className="mt-10 px-2 md:px-0">
+            <div
+              className={` py-4 rounded px-2 md:px-0 ${
+                isDark ? "bg-gray-900" : "bg-white shadow"
+              }`}
+            >
+              <h2 className="text-xl md:text-2xl lg:text-3xl text-center font-medium">
+                Most Resent Arts
+              </h2>
+              <p
+                className={`text-gray-500 text-justify md:text-center mt-4 ${
+                  isDark ? "" : ""
+                }`}
+              >
+                Explore the Most Recent Arts, featuring fresh creations from
+                talented artists worldwide. Discover new styles, innovative
+                techniques, and inspiring masterpieces that capture the essence
+                of modern artistic expression.
+              </p>
+            </div>
+            <Suspense
+              fallback={
+                <div className="text-center">
+                  <span className="loading loading-spinner text-success"></span>
+                </div>
+              }
+            >
+              <ArtWorks promiseArtworks={promiseArtworks} />
+            </Suspense>
+          </div>
+          {/* Top Artists of the Week */}
+          <TopArtists />
+
+          {/* CommunityHighlights post component */}
+          <CommunityHighlights />
+        </main>
+      </MyContainer>
+    </div>
+  );
+};
+
+export default HomePage;

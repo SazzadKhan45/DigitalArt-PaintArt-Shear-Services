@@ -1,0 +1,81 @@
+import { createBrowserRouter } from "react-router";
+import HomeLayout from "../Layouts/HomeLayout";
+import ErrorPage from "../ErrorPage/ErrorPage";
+import HomePage from "../Pages/HomePage/HomePage";
+import RegisterPage from "../Pages/RegisterPage/RegisterPage";
+import LoginPage from "../Pages/LoginPage/LoginPage";
+import ExploreArtwork from "../Components/ExploreArtwork/ExploreArtwork";
+import PrivateRoutes from "./../PrivateRoutes/PrivateRoutes";
+import AddArtwork from "../Components/AddArtwork/AddArtwork";
+import MyGallery from "../Components/MyGallery/MyGallery";
+import MyFavorites from "../Components/MyFavorites/MyFavorites";
+import ArtDetails from "../Components/ArtDetails/ArtDetails";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    Component: HomeLayout,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        Component: HomePage,
+      },
+      {
+        path: "/explore-Artworks",
+        Component: ExploreArtwork,
+      },
+      {
+        path: "/artWorks-details/:id",
+        loader: ({ params }) =>
+          fetch(
+            `https://color-nest-server.vercel.app/explore-art/${params.id}`
+          ),
+        element: (
+          <PrivateRoutes>
+            <ArtDetails />
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "/add-Artwork",
+        element: (
+          <PrivateRoutes>
+            <AddArtwork />
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "/my-Gallery",
+        element: (
+          <PrivateRoutes>
+            <MyGallery />
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "/my-Favorites",
+        element: (
+          <PrivateRoutes>
+            <MyFavorites />
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "/register",
+        Component: RegisterPage,
+      },
+      {
+        path: "/login",
+        Component: LoginPage,
+      },
+
+      {
+        path: "*",
+        Component: ErrorPage,
+      },
+    ],
+  },
+]);
+
+export default router;
